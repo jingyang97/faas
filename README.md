@@ -6,5 +6,3 @@ code for serverless
 * update lambda function code
 * create pull request
 * it will automatically deploy
-
-test
