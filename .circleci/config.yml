@@ -42,7 +42,7 @@ jobs:
                 --function-name  password_reset \
                 --s3-bucket ${S3_CODEDEPLOY_BUCKET} \
                 --s3-key lambda-${CIRCLE_BUILD_NUM}.zip \
-                --publish true
+                --publish
 
       - run:
           name: CodeDeploy API call
