@@ -1,0 +1,9 @@
+version: 0.0
+Resources:
+  - password_reset:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "password_reset"
+        Alias: "aliasL"
+        CurrentVersion: "1"
+        TargetVersion: "2"

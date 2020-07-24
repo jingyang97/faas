@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     # directory where steps are run
-    working_directory: ~/faas/password_reset
+    working_directory: ~/faas
     docker:
       - image: circleci/python:3.7.4
     steps: # steps that comprise the `build` job
@@ -14,36 +14,15 @@ jobs:
             sudo apt-get install -y python3-pip
             sudo pip install awscli
             echo "awscli installed"
-      # - run:
-      #     name: build WAR
-      #     command: |-
-      #       ./gradlew clean assemble
-      #       pwd
-      #       ls -al
-      #       ls -al build/libs
-      # - run:
-      #     name: overwrite env var
-      #     command: |-
-      #       export IS_PRODUCTION=false
-      #       echo $IS_PRODUCTION
-      #       if $IS_PRODUCTION
-      #       then
-      #         # export S3_CODEDEPLOY_BUCKET=${PROD_S3_CODEDEPLOY_BUCKET}
-      #         export AWS_ACCESS_KEY_ID=${PROD_AWS_ACCESS_KEY_ID}
-      #         export AWS_SECRET_ACCESS_KEY=${PROD_AWS_SECRET_ACCESS_KEY}
-      #       else
-      #         # export S3_CODEDEPLOY_BUCKET=${DEV_S3_CODEDEPLOY_BUCKET}
-      #         export AWS_ACCESS_KEY_ID=${DEV_AWS_ACCESS_KEY_ID}
-      #         export AWS_SECRET_ACCESS_KEY=${DEV_AWS_SECRET_ACCESS_KEY}
-      #       fi
       - run:
           name: build deployment artifacts
           command: |-
             mkdir codedeploy_artifact
-            zip -r lambda-${CIRCLE_BUILD_NUM}.zip *
+            zip -r lambda-${CIRCLE_BUILD_NUM}.zip password_reset
             pwd
             ls -al
             mv lambda-${CIRCLE_BUILD_NUM}.zip codedeploy_artifact/
+            mv appspec.yml codedeploy_artifact/
             ls -al
             pwd
             cd codedeploy_artifact
@@ -57,15 +36,24 @@ jobs:
           command: |-
             aws s3 sync ./codedeploy_artifact s3://${S3_CODEDEPLOY_BUCKET}
       - run:
+          name: update lambda function code
+          command: |-
+            aws lambda update-function-code \
+                --function-name  password_reset \
+                --s3-bucket ${S3_CODEDEPLOY_BUCKET} \
+                --s3-key lambda-${CIRCLE_BUILD_NUM}.zip \
+                --publish true
+
+      - run:
           name: CodeDeploy API call
           command: |-
-            export $IS_PRODUCTION
+
             aws deploy create-deployment \
                 --application-name ${CODEDEPLOY_APPLICATION_NAME} \
                 --deployment-config-name CodeDeployDefault.LambdaAllAtOnce \
                 --deployment-group-name ${CODEDEPLOY_APPLICATION_DEPLOYMENT_GROUP_NAME} \
                 --description "CSYE6225 - CodeDeploy" \
-                --s3-location bucket=${S3_CODEDEPLOY_BUCKET},key=lambda-${CIRCLE_BUILD_NUM}.zip,bundleType=zip \
+                --s3-location bucket=${S3_CODEDEPLOY_BUCKET},key=appspec.yml,bundleType=YAML \
                 --region us-east-1 \
                 --output json
 
