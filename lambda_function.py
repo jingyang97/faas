@@ -76,15 +76,15 @@ def sendEmail(email_address, uuid_str):
 
     # The HTML body of the email.
     BODY_HTML = """<html>
-    <head>Password Reset</head>
+    <head><h1>Password Reset</h1></head>
     <body>
-    <h2>Click Link Below to Reset Your Password</h2>
+    <h3>Click Link Below to Reset Your Password</h3>
     <p>
         <a href='http://prod.lazyless.me/accounts/restore/{email_address}/{uuid_str}/'>This Link</a>
     </p>
-    <h2>Or Copy This Link and Open in Your Browser to Reset Your Password</h2>
+    <h3>Or Copy This Link and Open in Your Browser to Reset Your Password</h3>
     <p>
-        'http://prod.lazyless.me/accounts/restore/{email_address}/{uuid_str}/'>
+        http://prod.lazyless.me/accounts/restore/{email_address}/{uuid_str}/
     </p>
     </body>
     </html>
