@@ -127,3 +127,21 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.DS_Store
+.vscode/
+
+# terraform
+.terraform
+*.tfstate
+*.tfstate.backup
+
+# packer
+# Cache objects
+packer_cache/
+
+# Crash log
+crash.log
+
+# For built boxes
+*.box
