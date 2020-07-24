@@ -18,7 +18,7 @@ jobs:
           name: build deployment artifacts
           command: |-
             mkdir codedeploy_artifact
-            zip -r lambda-${CIRCLE_BUILD_NUM}.zip password_reset
+            zip -r lambda-${CIRCLE_BUILD_NUM}.zip lambda_function.py
             pwd
             ls -al
             mv lambda-${CIRCLE_BUILD_NUM}.zip codedeploy_artifact/
