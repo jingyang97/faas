@@ -5,5 +5,5 @@ Resources:
       Properties:
         Name: "password_reset"
         Alias: "aliasL"
-        CurrentVersion: "27"
-        TargetVersion: "28"
+        CurrentVersion: "29"
+        TargetVersion: "30"
