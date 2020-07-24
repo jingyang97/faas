@@ -38,6 +38,8 @@ jobs:
       - run:
           name: update lambda function code
           command: |-
+            aws configure \
+                Default region name [None]: us-west-2
             aws lambda update-function-code \
                 --function-name  password_reset \
                 --s3-bucket ${S3_CODEDEPLOY_BUCKET} \
