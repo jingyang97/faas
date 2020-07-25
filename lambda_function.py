@@ -30,7 +30,9 @@ def db_handler(email):
                                Key={'email': {
                                    'S': email
                                }})
-    if "Item" in response:
+    curr_time = int(time.time())
+    if "Item" in response and int(
+            response["Item"]["TimeToExist"]["N"]) > curr_time:
         uuid_str = response["Item"]["uuid"]["S"]
         print("email existed!")
     else:
