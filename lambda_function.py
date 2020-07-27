@@ -85,7 +85,7 @@ def sendEmail(email_address, uuid_str):
     </p>
     <h3>Or Copy This Link and Open in Your Browser to Reset Your Password</h3>
     <p>
-        http://prod.lazyless.me/accounts/restore/{email_address}/{uuid_str}/
+        https://prod.lazyless.me/accounts/restore/{email_address}/{uuid_str}/
     </p>
     </body>
     </html>
