@@ -41,7 +41,7 @@ jobs:
             aws lambda update-function-code \
                 --function-name  password_reset \
                 --s3-bucket ${S3_CODEDEPLOY_BUCKET} \
-                --s3-key lambda-${CIRCLE_BUILD_NUM}.zip \
+                --s3-key lambda-${CIRCLE_BUILD_NUM}.zip
 
       - run:
           name: CodeDeploy API call
