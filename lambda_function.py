@@ -15,11 +15,10 @@ import boto3
 
 def lambda_handler(event, context):
     #print("Received event: " + json.dumps(event, indent=2))
-    message = event['Records'][0]['Sns']['Message']
-    print("From SNS: " + message)
-    uid = db_handler(message)
-    sendEmail(message, uid)
-    return message
+    email = event['Records'][0]['Sns']['Message']
+    print("From SNS: " + email)
+    db_handler(email)
+    return email
 
 
 def db_handler(email):
@@ -56,8 +55,8 @@ def db_handler(email):
                             }
                         })
         print("new email")
-    print(uuid_str)
-    return uuid_str
+        print(uuid_str)
+        sendEmail(email, uuid_str)
 
 
 def sendEmail(email_address, uuid_str):
